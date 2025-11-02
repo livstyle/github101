@@ -113,3 +113,31 @@ jobs:
           echo "issues=$CLOSED_ISSUES" >> $GITHUB_ENV
           echo "prs=$PR_COUNT" >> $GITHUB_ENV
           echo "score=$SCORE" >> $GITHUB_ENV
+          
+      - name: Post summary JSON to remote API
+        run: |
+          # 获取仓库信息
+          REPO_NAME=${{ github.repository }}
+          OWNER=$(echo $REPO_NAME | cut -d'/' -f1)
+          REPO=$(echo $REPO_NAME | cut -d'/' -f2)
+          
+          # 创建JSON数据
+          SUMMARY=$(cat <<EOF
+          {
+            "channel": "github",
+            "courseId": 1948,
+            "ext": "aaa",
+            "name": "$OWNER",
+            "score": ${{ env.score }},
+            "totalScore": 1000
+          }
+          EOF
+          )
+          
+          # 发送到远程API
+          curl -X POST "https://api.example.com/score" \
+            -H "accept: application/json;charset=utf-8" \
+            -H "Content-Type: application/json" \
+            -H "token: e3619ccddafc47589bbe788ca31a2df0" \
+            -d "$SUMMARY" \
+            -v
