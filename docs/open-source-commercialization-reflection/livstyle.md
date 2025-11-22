@@ -496,3 +496,4 @@ livstyle - 一个正在学习开源商业化的技术人，相信开源的力量
 
 *Keep the source open, keep the future bright.* 🚀
 
+#### Fixes: #9
